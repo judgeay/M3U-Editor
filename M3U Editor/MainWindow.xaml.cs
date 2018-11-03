@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace M3U_Editor
 {
@@ -22,7 +10,27 @@ namespace M3U_Editor
     {
         public MainWindow()
         {
+            DataContext = new MainWindowViewModel();
+
             InitializeComponent();
+        }
+
+        private void DeleteGroupsMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = ((MainWindowViewModel)DataContext);
+            if (viewModel.M3uFile == null) return;
+            if (GroupsListBox.SelectedItems.Count == 0) return;
+
+            viewModel.M3uFile.DeleteGroups(GroupsListBox.SelectedItems.OfType<Group>());
+        }
+
+        private void DeleteChannelsMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = ((MainWindowViewModel)DataContext);
+            if (viewModel.M3uFile == null) return;
+            if (ChannelsListBox.SelectedItems.Count == 0) return;
+
+            viewModel.M3uFile.DeleteChannels(ChannelsListBox.SelectedItems.OfType<Channel>());
         }
     }
 }

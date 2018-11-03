@@ -5,8 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:M3U_Editor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
+        Title="M3U Editor" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+        </Style>
+    </Window.Resources>
         
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Margin="10,5">
+            <Button Content="Load" Command="{Binding LoadCommand}" />
+            <Button Content="Save" Command="{Binding SaveCommand}" />
+        </StackPanel>
+
+        <DockPanel Grid.Column="0" Grid.Row="1" Margin="10" LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top" Text="Groups:" />
+            <ListBox Name="GroupsListBox" DockPanel.Dock="Bottom" SelectionMode="Extended" SelectedItem="{Binding M3uFile.SelectedGroup}" ItemsSource="{Binding M3uFile.Groups}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="DeleteGroupsMenuItemClick" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <DockPanel Grid.Column="1" Grid.Row="1" Margin="10" LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top" Text="Channels:" />
+            <ListBox Name="ChannelsListBox" DockPanel.Dock="Bottom" SelectionMode="Extended" ItemsSource="{Binding M3uFile.SelectedGroup.Channels}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="DeleteChannelsMenuItemClick" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
     </Grid>
 </Window>
